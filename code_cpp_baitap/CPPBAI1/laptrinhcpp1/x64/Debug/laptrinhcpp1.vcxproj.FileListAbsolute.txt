@@ -1,0 +1,3 @@
+C:\Users\Admin\Desktop\laptrinhcpp\laptrinhcpp1\x64\Debug\laptrinhcpp1.exe
+F:\laptrinhcpp\laptrinhcpp1\x64\Debug\main.exe
+C:\Users\Admin\Desktop\hoc3tr\interview-T2\embedded-interview-t2\code_cpp_baitap\CPPBAI1\laptrinhcpp1\x64\Debug\main.exe
