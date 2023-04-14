@@ -1,0 +1,117 @@
+/*
+File: codeUARTForArduino
+Author: DoVanTu
+Date: 14/4/2023
+Description: 
+viết chức năng giao tiếp UART cơ bản bao gồm hàm truyền và hàm nhận
+phần cứng sử dụng board arduino Nano
+*/
+// macro map UART protocol
+#define tXPin 3
+#define tRPin 4
+
+/*
+Fuction: setup
+Description: cấu hình chức năng chân bao gồm chân cho giao thức UART 
+              và 1 chân điều khiển ngõ ra check truyền nhận giao thức
+*/
+void setup() 
+{
+  pinMode(tXPin, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(tRPin, INPUT);
+}
+
+/*
+Fuction: sendUART
+Input: 
+byteSend- byte cần truyền tới thiết bị giao tiếp
+Output: none
+Parameter: 
+i: tham số tạo vòng lặp for, truyền liên tục 8 bit 1 lần
+Description: bắt đầu quá trình gửi dữ liệu tới thiết bị qua giao thức UART
+*/
+void sendUART(uint8_t byteSend)
+{
+  digitalWrite(tXPin, 0);  
+  delayMicroseconds(100);
+  for(uint8_t i=0;i<8;i++)
+  {
+    digitalWrite(tXPin, ((byteSend>>i)&0x01));  
+    delayMicroseconds(100);
+  }
+  if(byteSend%2!=0)
+  {
+    digitalWrite(tXPin, 0);  
+    delayMicroseconds(100);    
+  }
+  else
+  {
+    digitalWrite(tXPin, 1); 
+    delayMicroseconds(100);    
+  }
+  digitalWrite(tXPin, HIGH); 
+  delayMicroseconds(100); 
+}
+
+/*
+Fuction: recieveUART()
+Input: 
+byteSend- byte cần truyền tới thiết bị giao tiếp
+Output: trả về byteRecieve;
+Parameter: 
+byteRecieve: nhận từng bit trả về từ chân rXPin
+checkParaty: kiểm tra tính chẵn lẻ
+Description: bắt đầu quá trình nhận dữ liệu 8bit trả về từ thiết bị gửi qua giao thức UART
+*/
+uint8_t recieveUART()
+{
+  uint8_t byteRecieve=0;
+  bool checkParaty=0;
+  if(tRPin==0)
+  {
+    delayMicroseconds(100);
+    for(uint8_t i=0;i<8;i++)
+    {
+      byteRecieve=byteRecieve<<1|digitalRead(tRPin);
+    }
+  }
+  checkParaty=digitalRead(tRPin); 
+  if(checkParaty==(byteRecieve%2))
+  {
+    while(1)
+    {
+        digitalWrite(LED_BUILTIN, HIGH);
+        delay(100);
+        digitalWrite(LED_BUILTIN, HIGH);
+        delay(100);
+    }
+  }
+  else
+  {
+    delayMicroseconds(100);
+  }
+  return byteRecieve;
+}
+
+/*
+Fuction: loop
+Input: 
+byteSend- byte cần truyền tới thiết bị giao tiếp
+Output: trả về byteRecieve;
+Parameter: 
+byteRecieve: nhận từng bit trả về từ chân rXPin
+checkParaty: kiểm tra tính chẵn lẻ
+Description: bắt đầu quá trình nhận dữ liệu 8bit trả về từ thiết bị gửi qua giao thức UART
+*/
+void loop() 
+{
+  sendUART('H'); 
+  delay(1000);
+  while(digitalRead(tRPin))
+  {
+    digitalWrite(LED_BUILTIN, 1);
+  }
+  digitalWrite(LED_BUILTIN, 0);
+  recieveUART();
+}
