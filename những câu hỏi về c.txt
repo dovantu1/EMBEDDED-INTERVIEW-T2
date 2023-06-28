@@ -1,0 +1,9 @@
+câu 1 khác nhau giữa macro, fuction?
+câu 2 biến static là gì những hiểu biết về nó ?
+câu 3 so sánh struct với union ?
+câu 4 extern là gì những hiểu biết về nó ?
+câu 5 con trỏ là gì những hiểu biết về nó ? con trỏ null là gì hiểu biết về nó ?size của con trỏ phụ thuộc gì?
+câu 6 hàm inline là gì và những hiểu biết về nó?
+câu 7 cấp phát động và những hiểu biết về nó 
+câu 8 phân vùng heap và stack?
+
